@@ -1,0 +1,928 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>الوحدة الثامنة - مقدمة في التفاضل والتكامل</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;800&display=swap');
+
+  :root {
+    --green-dark: #1a5c3a;
+    --green-mid: #2e7d52;
+    --green-light: #4caf7d;
+    --teal: #00897b;
+    --gold: #f9a825;
+    --gold-light: #fff8e1;
+    --bg: #f5f7f5;
+    --white: #ffffff;
+    --text: #1c2b1e;
+    --text-light: #5a7060;
+    --border: #c8ddd0;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Tajawal', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.8;
+  }
+
+  /* HERO */
+  .hero {
+    background: linear-gradient(135deg, var(--green-dark) 0%, var(--teal) 60%, var(--green-light) 100%);
+    color: white;
+    padding: 60px 24px 50px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero::before {
+    content: '';
+    position: absolute;
+    top: -60px; left: -60px;
+    width: 220px; height: 220px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.07);
+  }
+  .hero::after {
+    content: '';
+    position: absolute;
+    bottom: -80px; right: -40px;
+    width: 280px; height: 280px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.05);
+  }
+  .hero-badge {
+    display: inline-block;
+    background: rgba(255,255,255,0.2);
+    border: 1px solid rgba(255,255,255,0.4);
+    border-radius: 20px;
+    padding: 6px 20px;
+    font-size: 13px;
+    letter-spacing: 1px;
+    margin-bottom: 18px;
+  }
+  .hero h1 {
+    font-size: 2.4rem;
+    font-weight: 800;
+    margin-bottom: 8px;
+    text-shadow: 0 2px 8px rgba(0,0,0,0.2);
+  }
+  .hero p {
+    font-size: 1rem;
+    opacity: 0.85;
+    max-width: 500px;
+    margin: 0 auto;
+  }
+  .hero-names {
+    display: flex;
+    justify-content: center;
+    gap: 30px;
+    flex-wrap: wrap;
+    margin-top: 20px;
+  }
+  .hero-names .name-card {
+    background: rgba(255,255,255,0.15);
+    border: 1px solid rgba(255,255,255,0.35);
+    border-radius: 14px;
+    padding: 10px 22px;
+    font-size: 0.92rem;
+  }
+  .hero-names .name-card .label {
+    opacity: 0.7;
+    font-size: 0.75rem;
+    margin-bottom: 3px;
+  }
+  .hero-names .name-card .value {
+    font-weight: 700;
+  }
+  .hero-lessons {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    flex-wrap: wrap;
+    margin-top: 28px;
+  }
+  .hero-lessons span {
+    background: rgba(255,255,255,0.15);
+    border: 1px solid rgba(255,255,255,0.3);
+    border-radius: 12px;
+    padding: 5px 14px;
+    font-size: 12px;
+    font-weight: 500;
+  }
+
+  /* CONTAINER */
+  .container {
+    max-width: 860px;
+    margin: 0 auto;
+    padding: 32px 16px 60px;
+  }
+
+  /* LESSON CARD */
+  .lesson {
+    background: var(--white);
+    border-radius: 20px;
+    margin-bottom: 28px;
+    overflow: hidden;
+    box-shadow: 0 2px 16px rgba(30,80,50,0.08);
+    border: 1px solid var(--border);
+  }
+
+  .lesson-header {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 22px 26px;
+    background: linear-gradient(90deg, var(--green-dark), var(--green-mid));
+    color: white;
+  }
+  .lesson-num {
+    background: rgba(255,255,255,0.2);
+    border: 2px solid rgba(255,255,255,0.5);
+    border-radius: 12px;
+    padding: 6px 14px;
+    font-size: 1.1rem;
+    font-weight: 800;
+    white-space: nowrap;
+  }
+  .lesson-header h2 { font-size: 1.2rem; font-weight: 700; flex: 1; }
+  .lesson-header .en { font-size: 0.78rem; opacity: 0.75; font-weight: 400; }
+
+  .lesson-body { padding: 26px; }
+
+  /* DEF BOX */
+  .def-box {
+    background: linear-gradient(135deg, #e8f5ee, #f0faf4);
+    border-right: 4px solid var(--green-mid);
+    border-radius: 12px;
+    padding: 16px 18px;
+    margin-bottom: 18px;
+    font-size: 0.95rem;
+  }
+  .def-box .def-title {
+    font-weight: 700;
+    color: var(--green-dark);
+    margin-bottom: 6px;
+    font-size: 1rem;
+  }
+
+  /* CONCEPT GRID */
+  .concept-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin: 16px 0;
+  }
+  @media(max-width:540px){ .concept-grid { grid-template-columns: 1fr; } }
+
+  .concept-card {
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 14px 16px;
+  }
+  .concept-card .cc-title {
+    font-weight: 700;
+    color: var(--green-dark);
+    font-size: 0.9rem;
+    margin-bottom: 5px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .concept-card .cc-title::before {
+    content: '';
+    display: inline-block;
+    width: 8px; height: 8px;
+    background: var(--green-light);
+    border-radius: 50%;
+  }
+  .concept-card p { font-size: 0.85rem; color: var(--text-light); line-height: 1.6; }
+
+  /* FORMULA BOX */
+  .formula-box {
+    background: var(--green-dark);
+    color: white;
+    border-radius: 14px;
+    padding: 18px 22px;
+    margin: 16px 0;
+    text-align: center;
+  }
+  .formula-box .f-label { font-size: 0.8rem; opacity: 0.7; margin-bottom: 8px; }
+  .formula-box .f-eq { font-size: 1.2rem; font-weight: 700; letter-spacing: 1px; direction: ltr; }
+
+  /* EXAMPLE BOX */
+  .example {
+    background: var(--gold-light);
+    border: 1px solid #ffe082;
+    border-right: 4px solid var(--gold);
+    border-radius: 12px;
+    padding: 18px 20px;
+    margin-top: 20px;
+  }
+  .example-title {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-weight: 700;
+    color: #7a5600;
+    margin-bottom: 12px;
+    font-size: 0.95rem;
+  }
+  .example-title .badge {
+    background: var(--gold);
+    color: white;
+    border-radius: 8px;
+    padding: 2px 10px;
+    font-size: 0.8rem;
+  }
+  .example-q {
+    font-weight: 600;
+    color: var(--text);
+    margin-bottom: 10px;
+    font-size: 0.9rem;
+  }
+  .example-steps {
+    list-style: none;
+    counter-reset: step;
+  }
+  .example-steps li {
+    counter-increment: step;
+    padding: 6px 30px 6px 0;
+    position: relative;
+    font-size: 0.88rem;
+    color: var(--text);
+    border-bottom: 1px dashed #fdd835;
+  }
+  .example-steps li:last-child { border-bottom: none; }
+  .example-steps li::before {
+    content: counter(step);
+    position: absolute;
+    right: 0;
+    top: 6px;
+    width: 20px; height: 20px;
+    background: var(--gold);
+    color: white;
+    border-radius: 50%;
+    font-size: 0.75rem;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .answer {
+    background: white;
+    border-radius: 8px;
+    padding: 10px 14px;
+    margin-top: 10px;
+    font-weight: 700;
+    color: var(--green-dark);
+    font-size: 0.9rem;
+    border: 1px solid #c8ddd0;
+  }
+  .answer::before { content: '✓ الإجابة: '; }
+
+  /* TABLE */
+  .styled-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.85rem;
+    margin: 14px 0;
+    border-radius: 10px;
+    overflow: hidden;
+  }
+  .styled-table th {
+    background: var(--green-dark);
+    color: white;
+    padding: 10px 14px;
+    text-align: right;
+    font-weight: 600;
+  }
+  .styled-table td {
+    padding: 9px 14px;
+    border-bottom: 1px solid var(--border);
+  }
+  .styled-table tr:nth-child(even) td { background: #f0faf4; }
+  .styled-table tr:last-child td { border-bottom: none; }
+
+  /* RULE BOX */
+  .rule-box {
+    background: linear-gradient(135deg, #e3f2fd, #e8f5ee);
+    border: 1px solid #90caf9;
+    border-radius: 12px;
+    padding: 16px 18px;
+    margin: 14px 0;
+  }
+  .rule-box .r-title {
+    font-weight: 700;
+    color: #1565c0;
+    margin-bottom: 8px;
+    font-size: 0.9rem;
+  }
+  .rule-box p, .rule-box li { font-size: 0.87rem; color: var(--text); line-height: 1.7; }
+  .rule-box ul { padding-right: 16px; }
+
+  /* DIVIDER */
+  .divider {
+    height: 2px;
+    background: linear-gradient(90deg, var(--green-light), transparent);
+    margin: 20px 0;
+    border-radius: 1px;
+  }
+
+  /* NOTE */
+  .note {
+    background: #fff3e0;
+    border-right: 3px solid #ff9800;
+    border-radius: 8px;
+    padding: 10px 14px;
+    font-size: 0.85rem;
+    color: #7a4a00;
+    margin: 12px 0;
+  }
+  .note strong { color: #e65100; }
+
+  /* SECTION LABEL */
+  .section-label {
+    font-size: 0.8rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    color: var(--green-mid);
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .section-label::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--border);
+  }
+
+  /* PROPS LIST */
+  .props-list {
+    list-style: none;
+    margin: 10px 0;
+  }
+  .props-list li {
+    padding: 7px 0;
+    border-bottom: 1px dashed var(--border);
+    font-size: 0.88rem;
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+  }
+  .props-list li:last-child { border-bottom: none; }
+  .props-list li::before {
+    content: '◈';
+    color: var(--green-light);
+    font-size: 0.8rem;
+    margin-top: 3px;
+    flex-shrink: 0;
+  }
+  .props-list li .eq {
+    direction: ltr;
+    font-weight: 600;
+    color: var(--green-dark);
+    background: #e8f5ee;
+    padding: 2px 8px;
+    border-radius: 6px;
+    font-size: 0.85rem;
+  }
+
+  /* FOOTER */
+  footer {
+    text-align: center;
+    padding: 30px 16px;
+    color: var(--text-light);
+    font-size: 0.82rem;
+    background: white;
+    border-top: 1px solid var(--border);
+    margin-top: 10px;
+  }
+</style>
+</head>
+<body>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-badge">رياضيات – ثالث ثانوي</div>
+  <h1>الوحدة الثامنة</h1>
+  <p>مقدمة في التفاضل والتكامل – ملخص شامل مع الأمثلة</p>
+  <div class="hero-names">
+    <div class="name-card">
+      <div class="label">اسم الطالبة</div>
+      <div class="value">مها فارس العنزي</div>
+    </div>
+    <div class="name-card">
+      <div class="label">اسم المعلمة</div>
+      <div class="value">أميرة معافا</div>
+    </div>
+  </div>
+  <div class="hero-lessons">
+    <span>8-1 النهايات بيانياً</span>
+    <span>8-2 النهايات جبرياً</span>
+    <span>8-3 المماس والسرعة</span>
+    <span>8-4 المشتقات</span>
+    <span>8-5 التكامل المحدد</span>
+    <span>8-6 النظرية الأساسية</span>
+  </div>
+</div>
+
+<div class="container">
+
+  <!-- ===== 8-1 ===== -->
+  <div class="lesson">
+    <div class="lesson-header">
+      <div class="lesson-num">8-1</div>
+      <div>
+        <h2>تقدير النهايات بيانياً</h2>
+        <div class="en">Estimating Limits Graphically</div>
+      </div>
+    </div>
+    <div class="lesson-body">
+
+      <div class="def-box">
+        <div class="def-title">مفهوم النهاية</div>
+        إذا اقتربت قيم f(x) من قيمة وحيدة L عندما تقترب x من c من كلا الجهتين، فإن نهاية الدالة تساوي L.
+        ويُكتب: <strong>lim f(x) = L عندما x→c</strong>
+      </div>
+
+      <div class="concept-grid">
+        <div class="concept-card">
+          <div class="cc-title">النهاية من جهة واحدة</div>
+          <p>اقتراب x من c من جهة اليمين فقط أو من جهة اليسار فقط.</p>
+        </div>
+        <div class="concept-card">
+          <div class="cc-title">النهاية من جهتين</div>
+          <p>تتساوى النهاية من اليمين ومن اليسار → نهاية ثنائية الجهة موجودة.</p>
+        </div>
+        <div class="concept-card">
+          <div class="cc-title">النهاية ≠ قيمة الدالة</div>
+          <p>النهاية تصف سلوك الدالة عند الاقتراب من نقطة، لا عند النقطة نفسها.</p>
+        </div>
+        <div class="concept-card">
+          <div class="cc-title">عدم وجود النهاية</div>
+          <p>إذا اختلفت النهايتان من اليمين واليسار، فالنهاية غير موجودة.</p>
+        </div>
+      </div>
+
+      <div class="example">
+        <div class="example-title"><span class="badge">مثال 1</span> تقدير النهاية بيانياً</div>
+        <div class="example-q">قدِّر lim(x→2) (−3x + 1) بيانياً وعددياً.</div>
+        <ul class="example-steps">
+          <li>الدالة خطية: f(x) = −3x + 1، نرسم التمثيل البياني.</li>
+          <li>عند اقتراب x من 2 من اليمين: f(2.001) = −5.003</li>
+          <li>عند اقتراب x من 2 من اليسار: f(1.999) = −4.997</li>
+          <li>كلا القيمتين تقتربان من −5</li>
+        </ul>
+        <div class="answer">lim(x→2)(−3x + 1) = −5</div>
+      </div>
+
+      <div class="example">
+        <div class="example-title"><span class="badge">مثال 2</span> نهاية غير موجودة</div>
+        <div class="example-q">قدِّر lim(x→0) (1/x) بيانياً.</div>
+        <ul class="example-steps">
+          <li>عند اقتراب x من 0 من اليمين: f(x) → +∞</li>
+          <li>عند اقتراب x من 0 من اليسار: f(x) → −∞</li>
+          <li>النهايتان مختلفتان.</li>
+        </ul>
+        <div class="answer">النهاية غير موجودة</div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ===== 8-2 ===== -->
+  <div class="lesson">
+    <div class="lesson-header">
+      <div class="lesson-num">8-2</div>
+      <div>
+        <h2>حساب النهايات جبرياً</h2>
+        <div class="en">Evaluating Limits Algebraically</div>
+      </div>
+    </div>
+    <div class="lesson-body">
+
+      <div class="section-label">خصائص النهايات</div>
+      <ul class="props-list">
+        <li><span>خاصية الثابتة:</span> <span class="eq">lim k = k</span></li>
+        <li><span>خاصية الدالة المحايدة:</span> <span class="eq">lim x = c</span></li>
+        <li><span>خاصية المجموع:</span> <span class="eq">lim[f+g] = lim f + lim g</span></li>
+        <li><span>خاصية الفرق:</span> <span class="eq">lim[f−g] = lim f − lim g</span></li>
+        <li><span>خاصية الضرب في ثابت:</span> <span class="eq">lim[k·f] = k · lim f</span></li>
+        <li><span>خاصية الضرب:</span> <span class="eq">lim[f·g] = lim f · lim g</span></li>
+        <li><span>خاصية القسمة (lim g ≠ 0):</span> <span class="eq">lim[f/g] = lim f / lim g</span></li>
+        <li><span>خاصية القوة:</span> <span class="eq">lim[f(x)]ⁿ = [lim f(x)]ⁿ</span></li>
+      </ul>
+
+      <div class="divider"></div>
+      <div class="section-label">طرق حساب النهايات</div>
+
+      <div class="concept-grid">
+        <div class="concept-card">
+          <div class="cc-title">التعويض المباشر</div>
+          <p>نعوّض x = c في الدالة مباشرة. تنجح إذا لم تعطِ صيغة غير محددة.</p>
+        </div>
+        <div class="concept-card">
+          <div class="cc-title">الصيغة غير المحددة 0/0</div>
+          <p>نُبسّط بالتحليل أو الضرب في المرافق ثم نعوّض.</p>
+        </div>
+        <div class="concept-card">
+          <div class="cc-title">النهاية عند ±∞</div>
+          <p>نقسم البسط والمقام على أعلى قوة لـ x في المقام.</p>
+        </div>
+        <div class="concept-card">
+          <div class="cc-title">النهاية النسبية</div>
+          <p>للدوال النسبية عند اللانهاية: يهيمن الحد ذو أعلى الدرجات.</p>
+        </div>
+      </div>
+
+      <div class="example">
+        <div class="example-title"><span class="badge">مثال 1</span> التعويض المباشر</div>
+        <div class="example-q">أوجد lim(x→3) (x² − 2x + 1)</div>
+        <ul class="example-steps">
+          <li>نعوّض x = 3 مباشرة</li>
+          <li>= (3)² − 2(3) + 1 = 9 − 6 + 1 = 4</li>
+        </ul>
+        <div class="answer">النهاية = 4</div>
+      </div>
+
+      <div class="example">
+        <div class="example-title"><span class="badge">مثال 2</span> التحليل لرفع الصيغة غير المحددة</div>
+        <div class="example-q">أوجد lim(x→2) (x² − 4)/(x − 2)</div>
+        <ul class="example-steps">
+          <li>التعويض المباشر يعطي 0/0 (صيغة غير محددة)</li>
+          <li>نحلّل: (x² − 4) = (x−2)(x+2)</li>
+          <li>lim = lim(x+2) = 2 + 2 = 4</li>
+        </ul>
+        <div class="answer">النهاية = 4</div>
+      </div>
+
+      <div class="example">
+        <div class="example-title"><span class="badge">مثال 3</span> النهاية عند اللانهاية</div>
+        <div class="example-q">أوجد lim(x→∞) (3x² + 1)/(x² − 5)</div>
+        <ul class="example-steps">
+          <li>نقسم البسط والمقام على x²</li>
+          <li>= lim (3 + 1/x²) / (1 − 5/x²)</li>
+          <li>عندما x→∞ ، كل حد من الشكل (c/xⁿ) يساوي صفراً</li>
+          <li>= (3 + 0)/(1 − 0) = 3</li>
+        </ul>
+        <div class="answer">النهاية = 3</div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ===== 8-3 ===== -->
+  <div class="lesson">
+    <div class="lesson-header">
+      <div class="lesson-num">8-3</div>
+      <div>
+        <h2>المماس والسرعة المتجهة</h2>
+        <div class="en">Tangent Line and Velocity</div>
+      </div>
+    </div>
+    <div class="lesson-body">
+
+      <div class="def-box">
+        <div class="def-title">مفهوم المماس</div>
+        المماس لمنحنى عند نقطة هو المستقيم الذي يتقاطع مع المنحنى عند تلك النقطة ويعبّر عن اتجاهه اللحظي.
+      </div>
+
+      <div class="formula-box">
+        <div class="f-label">ميل المماس (معدل التغير اللحظي)</div>
+        <div class="f-eq">m = lim[h→0] [ f(x+h) − f(x) ] / h</div>
+      </div>
+
+      <div class="formula-box" style="background: #1a3a5c; margin-top: 12px;">
+        <div class="f-label">معادلة المماس عند النقطة (x₁, y₁)</div>
+        <div class="f-eq">y − y₁ = m(x − x₁)</div>
+      </div>
+
+      <div class="rule-box">
+        <div class="r-title">📌 قسمة الفرق</div>
+        <p>الصيغة <strong>[f(x+h) − f(x)] / h</strong> تُسمى قسمة الفرق، وهي أساس حساب ميل المماس والمشتقة.</p>
+      </div>
+
+      <div class="divider"></div>
+      <div class="section-label">السرعة المتجهة اللحظية</div>
+      <div class="def-box">
+        <div class="def-title">السرعة اللحظية</div>
+        إذا كانت s(t) دالة الموضع، فالسرعة اللحظية عند t هي:
+        <strong>v(t) = lim[h→0] [s(t+h) − s(t)] / h</strong>
+      </div>
+
+      <div class="example">
+        <div class="example-title"><span class="badge">مثال 1</span> ميل المماس</div>
+        <div class="example-q">أوجد ميل مماس الدالة f(x) = x² عند النقطة (2, 4).</div>
+        <ul class="example-steps">
+          <li>m = lim[h→0] [f(2+h) − f(2)] / h</li>
+          <li>= lim[h→0] [(2+h)² − 4] / h</li>
+          <li>= lim[h→0] [4 + 4h + h² − 4] / h</li>
+          <li>= lim[h→0] (4h + h²)/h = lim[h→0] (4 + h) = 4</li>
+        </ul>
+        <div class="answer">ميل المماس = 4 ، معادلته: y − 4 = 4(x − 2)</div>
+      </div>
+
+      <div class="example">
+        <div class="example-title"><span class="badge">مثال 2</span> السرعة اللحظية</div>
+        <div class="example-q">موضع جسم: s(t) = 3t² متر. أوجد السرعة اللحظية عند t = 2 ثانية.</div>
+        <ul class="example-steps">
+          <li>v(t) = lim[h→0] [s(t+h) − s(t)] / h</li>
+          <li>= lim[h→0] [3(t+h)² − 3t²] / h</li>
+          <li>= lim[h→0] [6th + 3h²] / h = lim (6t + 3h) = 6t</li>
+          <li>عند t = 2: v(2) = 6(2) = 12</li>
+        </ul>
+        <div class="answer">السرعة اللحظية عند t=2 هي 12 م/ث</div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ===== 8-4 ===== -->
+  <div class="lesson">
+    <div class="lesson-header">
+      <div class="lesson-num">8-4</div>
+      <div>
+        <h2>المشتقات</h2>
+        <div class="en">Derivatives</div>
+      </div>
+    </div>
+    <div class="lesson-body">
+
+      <div class="def-box">
+        <div class="def-title">تعريف المشتقة</div>
+        مشتقة الدالة f عند أي نقطة x هي ميل مماس المنحنى عند تلك النقطة:
+        <strong>f′(x) = lim[h→0] [f(x+h) − f(x)] / h</strong>
+        بشرط وجود هذه النهاية.
+      </div>
+
+      <div class="section-label">قواعد الاشتقاق</div>
+      <table class="styled-table">
+        <thead>
+          <tr><th>القاعدة</th><th>الصيغة</th><th>مثال</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>قاعدة الثابت</td>
+            <td>d/dx [c] = 0</td>
+            <td>d/dx [7] = 0</td>
+          </tr>
+          <tr>
+            <td>قاعدة القوة</td>
+            <td>d/dx [xⁿ] = n·xⁿ⁻¹</td>
+            <td>d/dx [x⁴] = 4x³</td>
+          </tr>
+          <tr>
+            <td>قاعدة الضرب في ثابت</td>
+            <td>d/dx [c·f] = c·f′</td>
+            <td>d/dx [5x³] = 15x²</td>
+          </tr>
+          <tr>
+            <td>قاعدة المجموع/الفرق</td>
+            <td>[f±g]′ = f′ ± g′</td>
+            <td>d/dx [x²+3x] = 2x+3</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="note">
+        <strong>تنبيه:</strong> المشتقة ترمز لها بـ f′(x) أو y′ أو dy/dx أو df/dx — كلها تعني الشيء نفسه.
+      </div>
+
+      <div class="example">
+        <div class="example-title"><span class="badge">مثال 1</span> المشتقة بالتعريف</div>
+        <div class="example-q">أوجد مشتقة f(x) = 4x² − 5x + 8 بالتعريف.</div>
+        <ul class="example-steps">
+          <li>f(x+h) = 4(x+h)² − 5(x+h) + 8</li>
+          <li>= 4x² + 8xh + 4h² − 5x − 5h + 8</li>
+          <li>[f(x+h)−f(x)] / h = (8xh + 4h² − 5h)/h</li>
+          <li>= 8x + 4h − 5</li>
+          <li>عند h→0: f′(x) = 8x − 5</li>
+        </ul>
+        <div class="answer">f′(x) = 8x − 5</div>
+      </div>
+
+      <div class="example">
+        <div class="example-title"><span class="badge">مثال 2</span> قواعد الاشتقاق</div>
+        <div class="example-q">أوجد مشتقة g(x) = 6x⁴ − 3x² + 7x − 2</div>
+        <ul class="example-steps">
+          <li>نشتق حداً حداً باستخدام قاعدة القوة</li>
+          <li>d/dx[6x⁴] = 24x³</li>
+          <li>d/dx[−3x²] = −6x</li>
+          <li>d/dx[7x] = 7 ، d/dx[−2] = 0</li>
+        </ul>
+        <div class="answer">g′(x) = 24x³ − 6x + 7</div>
+      </div>
+
+      <div class="example">
+        <div class="example-title"><span class="badge">مثال 3</span> قيمة المشتقة عند نقطة</div>
+        <div class="example-q">f(x) = 4x² − 5x + 8. أوجد f′(1) و f′(5).</div>
+        <ul class="example-steps">
+          <li>من المثال السابق: f′(x) = 8x − 5</li>
+          <li>f′(1) = 8(1) − 5 = 3</li>
+          <li>f′(5) = 8(5) − 5 = 35</li>
+        </ul>
+        <div class="answer">f′(1) = 3 ، f′(5) = 35</div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ===== 8-5 ===== -->
+  <div class="lesson">
+    <div class="lesson-header">
+      <div class="lesson-num">8-5</div>
+      <div>
+        <h2>المساحة تحت المنحنى والتكامل</h2>
+        <div class="en">Area Under the Curve and Integration</div>
+      </div>
+    </div>
+    <div class="lesson-body">
+
+      <div class="def-box">
+        <div class="def-title">التكامل المحدد</div>
+        يُستخدم لإيجاد المساحة بين منحنى دالة والمحور السيني على فترة [a, b].
+        يُرمز له بـ: <strong>∫ₐᵇ f(x) dx</strong>
+        حيث a الحد الأدنى وb الحد الأعلى.
+      </div>
+
+      <div class="concept-grid">
+        <div class="concept-card">
+          <div class="cc-title">التجزئة المنتظمة</div>
+          <p>تقسيم الفترة [a,b] إلى n أجزاء متساوية الطول: Δx = (b−a)/n</p>
+        </div>
+        <div class="concept-card">
+          <div class="cc-title">مجموع ريمان الأيمن</div>
+          <p>تقريب المساحة باستخدام مستطيلات قاعدتها Δx وارتفاعها f عند الطرف الأيمن.</p>
+        </div>
+        <div class="concept-card">
+          <div class="cc-title">زيادة n</div>
+          <p>كلما زاد عدد المستطيلات، كان التقريب أدق واقترب من المساحة الحقيقية.</p>
+        </div>
+        <div class="concept-card">
+          <div class="cc-title">الحد الأدنى والأعلى</div>
+          <p>a = الحد الأدنى للتكامل (بداية الفترة)<br>b = الحد الأعلى (نهاية الفترة)</p>
+        </div>
+      </div>
+
+      <div class="formula-box">
+        <div class="f-label">تقريب المساحة بمجموع ريمان</div>
+        <div class="f-eq">A ≈ Σ f(xᵢ) · Δx ، Δx = (b−a)/n</div>
+      </div>
+
+      <div class="example">
+        <div class="example-title"><span class="badge">مثال</span> تقريب المساحة بالمستطيلات</div>
+        <div class="example-q">قرِّب مساحة المنطقة بين f(x) = −x² + 12x والمحور السيني على [0,12] باستخدام 4 مستطيلات (الطرف الأيمن).</div>
+        <ul class="example-steps">
+          <li>طول الفترة = 12 − 0 = 12، Δx = 12/4 = 3</li>
+          <li>الفترات: [0,3]، [3,6]، [6,9]، [9,12]</li>
+          <li>الأطراف اليمنى: x = 3, 6, 9, 12</li>
+          <li>f(3) = −9+36 = 27، f(6) = −36+72 = 36، f(9) = −81+108 = 27، f(12) = −144+144 = 0</li>
+          <li>A ≈ (27 + 36 + 27 + 0) × 3 = 90 × 3 = 270</li>
+        </ul>
+        <div class="answer">المساحة التقريبية = 270 وحدة مربعة</div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ===== 8-6 ===== -->
+  <div class="lesson">
+    <div class="lesson-header">
+      <div class="lesson-num">8-6</div>
+      <div>
+        <h2>النظرية الأساسية في التفاضل والتكامل</h2>
+        <div class="en">The Fundamental Theorem of Calculus</div>
+      </div>
+    </div>
+    <div class="lesson-body">
+
+      <div class="def-box">
+        <div class="def-title">الدالة الأصلية (التكامل غير المحدد)</div>
+        F(x) هي دالة أصلية للدالة f إذا كان F′(x) = f(x).
+        والشكل العام: <strong>∫ f(x) dx = F(x) + C</strong>
+        حيث C ثابت التكامل.
+      </div>
+
+      <div class="section-label">قواعد التكامل</div>
+      <table class="styled-table">
+        <thead>
+          <tr><th>القاعدة</th><th>الصيغة</th><th>مثال</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>تكامل الثابت</td>
+            <td>∫ k dx = kx + C</td>
+            <td>∫ 5 dx = 5x + C</td>
+          </tr>
+          <tr>
+            <td>قاعدة القوة</td>
+            <td>∫ xⁿ dx = xⁿ⁺¹/(n+1) + C</td>
+            <td>∫ x³ dx = x⁴/4 + C</td>
+          </tr>
+          <tr>
+            <td>الضرب في ثابت</td>
+            <td>∫ k·f dx = k·∫f dx</td>
+            <td>∫ 3x² dx = x³ + C</td>
+          </tr>
+          <tr>
+            <td>التكامل المحدد</td>
+            <td>∫ₐᵇ f dx = F(b) − F(a)</td>
+            <td>∫₁³ x² dx = [x³/3]₁³</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="formula-box">
+        <div class="f-label">النظرية الأساسية في التفاضل والتكامل</div>
+        <div class="f-eq">∫ₐᵇ f(x) dx = F(b) − F(a)</div>
+      </div>
+
+      <div class="note">
+        <strong>ملاحظة:</strong> ثابت التكامل C يختفي في التكامل المحدد لأنه يُطرح من نفسه: [F(b)+C] − [F(a)+C] = F(b) − F(a)
+      </div>
+
+      <div class="example">
+        <div class="example-title"><span class="badge">مثال 1</span> إيجاد الدالة الأصلية</div>
+        <div class="example-q">أوجد دالتين أصليتين لـ f(x) = 3x²</div>
+        <ul class="example-steps">
+          <li>∫ 3x² dx = 3 · x³/3 + C = x³ + C</li>
+          <li>الدالة الأولى: F(x) = x³ (بوضع C = 0)</li>
+          <li>الدالة الثانية: G(x) = x³ + 10 (بوضع C = 10)</li>
+          <li>التحقق: F′(x) = 3x² ✓ ، G′(x) = 3x² ✓</li>
+        </ul>
+        <div class="answer">F(x) = x³ و G(x) = x³ + 10 (أو أي ثابت آخر)</div>
+      </div>
+
+      <div class="example">
+        <div class="example-title"><span class="badge">مثال 2</span> التكامل المحدد</div>
+        <div class="example-q">احسب ∫₁⁴ (2x + 3) dx</div>
+        <ul class="example-steps">
+          <li>F(x) = x² + 3x (الدالة الأصلية)</li>
+          <li>F(4) = 16 + 12 = 28</li>
+          <li>F(1) = 1 + 3 = 4</li>
+          <li>∫₁⁴ (2x+3) dx = F(4) − F(1) = 28 − 4 = 24</li>
+        </ul>
+        <div class="answer">التكامل = 24 وحدة مربعة</div>
+      </div>
+
+      <div class="example">
+        <div class="example-title"><span class="badge">مثال 3</span> مسألة تطبيقية</div>
+        <div class="example-q">سرعة جسم: v(t) = 6t² − 2t م/ث. أوجد المسافة المقطوعة من t=0 إلى t=3.</div>
+        <ul class="example-steps">
+          <li>المسافة = ∫₀³ (6t² − 2t) dt</li>
+          <li>F(t) = 2t³ − t²</li>
+          <li>F(3) = 2(27) − 9 = 54 − 9 = 45</li>
+          <li>F(0) = 0</li>
+          <li>المسافة = 45 − 0 = 45</li>
+        </ul>
+        <div class="answer">المسافة المقطوعة = 45 متر</div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- SUMMARY TABLE -->
+  <div class="lesson">
+    <div class="lesson-header" style="background: linear-gradient(90deg, #1a3a2a, #1a5c3a);">
+      <div class="lesson-num">📋</div>
+      <div>
+        <h2>ملخص القوانين الأساسية للوحدة</h2>
+        <div class="en">Key Formulas Summary</div>
+      </div>
+    </div>
+    <div class="lesson-body">
+      <table class="styled-table">
+        <thead>
+          <tr><th>الموضوع</th><th>القانون</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>تعريف النهاية</td><td>lim[x→c] f(x) = L</td></tr>
+          <tr><td>قاعدة القوة للتفاضل</td><td>d/dx [xⁿ] = n·xⁿ⁻¹</td></tr>
+          <tr><td>المشتقة بالتعريف</td><td>f′(x) = lim[h→0] [f(x+h)−f(x)]/h</td></tr>
+          <tr><td>ميل المماس</td><td>m = f′(c) عند x = c</td></tr>
+          <tr><td>معادلة المماس</td><td>y − y₁ = m(x − x₁)</td></tr>
+          <tr><td>قاعدة القوة للتكامل</td><td>∫ xⁿ dx = xⁿ⁺¹/(n+1) + C</td></tr>
+          <tr><td>النظرية الأساسية</td><td>∫ₐᵇ f(x) dx = F(b) − F(a)</td></tr>
+          <tr><td>تقريب المساحة</td><td>A ≈ Σ f(xᵢ)·Δx</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+</div>
+
+<footer>
+  الوحدة الثامنة – مقدمة في التفاضل والتكامل | رياضيات ثالث ثانوي 1445 هـ
+</footer>
+
+</body>
+</html>
