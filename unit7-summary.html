@@ -1,0 +1,931 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>الوحدة السابعة - الاحتمال والإحصاء</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;800&display=swap');
+
+  :root {
+    --green-dark: #1a5c3a;
+    --green-mid: #2e7d52;
+    --green-light: #4caf7d;
+    --teal: #00897b;
+    --gold: #f9a825;
+    --gold-light: #fff8e1;
+    --bg: #f5f7f5;
+    --white: #ffffff;
+    --text: #1c2b1e;
+    --text-light: #5a7060;
+    --border: #c8ddd0;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Tajawal', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.8;
+  }
+
+  /* HERO */
+  .hero {
+    background: linear-gradient(135deg, var(--green-dark) 0%, var(--teal) 60%, var(--green-light) 100%);
+    color: white;
+    padding: 60px 24px 50px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero::before {
+    content: '';
+    position: absolute;
+    top: -60px; left: -60px;
+    width: 220px; height: 220px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.07);
+  }
+  .hero::after {
+    content: '';
+    position: absolute;
+    bottom: -80px; right: -40px;
+    width: 280px; height: 280px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.05);
+  }
+  .hero-badge {
+    display: inline-block;
+    background: rgba(255,255,255,0.2);
+    border: 1px solid rgba(255,255,255,0.4);
+    border-radius: 20px;
+    padding: 6px 20px;
+    font-size: 13px;
+    letter-spacing: 1px;
+    margin-bottom: 18px;
+  }
+  .hero h1 {
+    font-size: 2.4rem;
+    font-weight: 800;
+    margin-bottom: 8px;
+    text-shadow: 0 2px 8px rgba(0,0,0,0.2);
+  }
+  .hero p {
+    font-size: 1rem;
+    opacity: 0.85;
+    max-width: 500px;
+    margin: 0 auto;
+  }
+  .hero-lessons {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    flex-wrap: wrap;
+    margin-top: 28px;
+  }
+  .hero-lessons span {
+    background: rgba(255,255,255,0.15);
+    border: 1px solid rgba(255,255,255,0.3);
+    border-radius: 12px;
+    padding: 5px 14px;
+    font-size: 12px;
+    font-weight: 500;
+  }
+
+  /* CONTAINER */
+  .container {
+    max-width: 860px;
+    margin: 0 auto;
+    padding: 32px 16px 60px;
+  }
+
+  /* LESSON CARD */
+  .lesson {
+    background: var(--white);
+    border-radius: 20px;
+    margin-bottom: 28px;
+    overflow: hidden;
+    box-shadow: 0 2px 16px rgba(30,80,50,0.08);
+    border: 1px solid var(--border);
+  }
+
+  .lesson-header {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 22px 26px;
+    background: linear-gradient(90deg, var(--green-dark), var(--green-mid));
+    color: white;
+  }
+  .lesson-num {
+    background: rgba(255,255,255,0.2);
+    border: 2px solid rgba(255,255,255,0.5);
+    border-radius: 12px;
+    padding: 6px 14px;
+    font-size: 1.1rem;
+    font-weight: 800;
+    white-space: nowrap;
+  }
+  .lesson-header h2 {
+    font-size: 1.2rem;
+    font-weight: 700;
+    flex: 1;
+  }
+  .lesson-header .en {
+    font-size: 0.78rem;
+    opacity: 0.75;
+    font-weight: 400;
+  }
+
+  .lesson-body {
+    padding: 26px;
+  }
+
+  /* DEFINITION BOX */
+  .def-box {
+    background: linear-gradient(135deg, #e8f5ee, #f0faf4);
+    border-right: 4px solid var(--green-mid);
+    border-radius: 12px;
+    padding: 16px 18px;
+    margin-bottom: 18px;
+    font-size: 0.95rem;
+  }
+  .def-box .def-title {
+    font-weight: 700;
+    color: var(--green-dark);
+    margin-bottom: 6px;
+    font-size: 1rem;
+  }
+
+  /* CONCEPT GRID */
+  .concept-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin: 16px 0;
+  }
+  @media(max-width:540px){ .concept-grid { grid-template-columns: 1fr; } }
+
+  .concept-card {
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 14px 16px;
+  }
+  .concept-card .cc-title {
+    font-weight: 700;
+    color: var(--green-dark);
+    font-size: 0.9rem;
+    margin-bottom: 5px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .concept-card .cc-title::before {
+    content: '';
+    display: inline-block;
+    width: 8px; height: 8px;
+    background: var(--green-light);
+    border-radius: 50%;
+  }
+  .concept-card p {
+    font-size: 0.85rem;
+    color: var(--text-light);
+    line-height: 1.6;
+  }
+
+  /* FORMULA BOX */
+  .formula-box {
+    background: var(--green-dark);
+    color: white;
+    border-radius: 14px;
+    padding: 18px 22px;
+    margin: 16px 0;
+    text-align: center;
+  }
+  .formula-box .f-label {
+    font-size: 0.8rem;
+    opacity: 0.7;
+    margin-bottom: 8px;
+  }
+  .formula-box .f-eq {
+    font-size: 1.25rem;
+    font-weight: 700;
+    letter-spacing: 1px;
+  }
+
+  /* EXAMPLE BOX */
+  .example {
+    background: var(--gold-light);
+    border: 1px solid #ffe082;
+    border-right: 4px solid var(--gold);
+    border-radius: 12px;
+    padding: 18px 20px;
+    margin-top: 20px;
+  }
+  .example-title {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-weight: 700;
+    color: #7a5600;
+    margin-bottom: 12px;
+    font-size: 0.95rem;
+  }
+  .example-title .badge {
+    background: var(--gold);
+    color: white;
+    border-radius: 8px;
+    padding: 2px 10px;
+    font-size: 0.8rem;
+  }
+  .example-q {
+    font-weight: 600;
+    color: var(--text);
+    margin-bottom: 10px;
+    font-size: 0.9rem;
+  }
+  .example-steps {
+    list-style: none;
+    counter-reset: step;
+  }
+  .example-steps li {
+    counter-increment: step;
+    padding: 6px 0 6px 0;
+    padding-right: 30px;
+    position: relative;
+    font-size: 0.88rem;
+    color: var(--text);
+    border-bottom: 1px dashed #fdd835;
+  }
+  .example-steps li:last-child { border-bottom: none; }
+  .example-steps li::before {
+    content: counter(step);
+    position: absolute;
+    right: 0;
+    top: 6px;
+    width: 20px; height: 20px;
+    background: var(--gold);
+    color: white;
+    border-radius: 50%;
+    font-size: 0.75rem;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .answer {
+    background: white;
+    border-radius: 8px;
+    padding: 10px 14px;
+    margin-top: 10px;
+    font-weight: 700;
+    color: var(--green-dark);
+    font-size: 0.9rem;
+    border: 1px solid #c8ddd0;
+  }
+  .answer::before { content: '✓ الإجابة: '; }
+
+  /* TABLE */
+  .styled-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.85rem;
+    margin: 14px 0;
+    border-radius: 10px;
+    overflow: hidden;
+  }
+  .styled-table th {
+    background: var(--green-dark);
+    color: white;
+    padding: 10px 14px;
+    text-align: right;
+    font-weight: 600;
+  }
+  .styled-table td {
+    padding: 9px 14px;
+    border-bottom: 1px solid var(--border);
+    color: var(--text);
+  }
+  .styled-table tr:nth-child(even) td { background: #f0faf4; }
+  .styled-table tr:last-child td { border-bottom: none; }
+
+  /* RULE BOX */
+  .rule-box {
+    background: linear-gradient(135deg, #e3f2fd, #e8f5ee);
+    border: 1px solid #90caf9;
+    border-radius: 12px;
+    padding: 16px 18px;
+    margin: 14px 0;
+  }
+  .rule-box .r-title {
+    font-weight: 700;
+    color: #1565c0;
+    margin-bottom: 8px;
+    font-size: 0.9rem;
+  }
+  .rule-box p, .rule-box li {
+    font-size: 0.87rem;
+    color: var(--text);
+    line-height: 1.7;
+  }
+  .rule-box ul { padding-right: 16px; }
+
+  /* PILL TAGS */
+  .tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin: 12px 0;
+  }
+  .tag {
+    background: #e8f5ee;
+    color: var(--green-dark);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    padding: 4px 14px;
+    font-size: 0.8rem;
+    font-weight: 500;
+  }
+
+  /* DIVIDER */
+  .divider {
+    height: 2px;
+    background: linear-gradient(90deg, var(--green-light), transparent);
+    margin: 20px 0;
+    border-radius: 1px;
+  }
+
+  /* NOTE */
+  .note {
+    background: #fff3e0;
+    border-right: 3px solid #ff9800;
+    border-radius: 8px;
+    padding: 10px 14px;
+    font-size: 0.85rem;
+    color: #7a4a00;
+    margin: 12px 0;
+  }
+  .note strong { color: #e65100; }
+
+  /* SECTION LABEL */
+  .section-label {
+    font-size: 0.8rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    color: var(--green-mid);
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .section-label::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--border);
+  }
+
+  /* FOOTER */
+  footer {
+    text-align: center;
+    padding: 30px 16px;
+    color: var(--text-light);
+    font-size: 0.82rem;
+    background: white;
+    border-top: 1px solid var(--border);
+    margin-top: 10px;
+  }
+</style>
+</head>
+<body>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-badge">رياضيات – ثالث ثانوي</div>
+  <h1>الوحدة السابعة</h1>
+  <p>الاحتمال والإحصاء – ملخص شامل مع الأمثلة</p>
+  <div style="display:flex;justify-content:center;gap:30px;flex-wrap:wrap;margin-top:20px;">
+    <div style="background:rgba(255,255,255,0.15);border:1px solid rgba(255,255,255,0.35);border-radius:14px;padding:10px 22px;font-size:0.92rem;">
+      <div style="opacity:0.7;font-size:0.75rem;margin-bottom:3px;">اسم الطالبة</div>
+      <div style="font-weight:700;">مها فارس العنزي</div>
+    </div>
+    <div style="background:rgba(255,255,255,0.15);border:1px solid rgba(255,255,255,0.35);border-radius:14px;padding:10px 22px;font-size:0.92rem;">
+      <div style="opacity:0.7;font-size:0.75rem;margin-bottom:3px;">اسم المعلمة</div>
+      <div style="font-weight:700;">أميرة معافا</div>
+    </div>
+  </div>
+  <div class="hero-lessons">
+    <span>7-1 الدراسات المسحية</span>
+    <span>7-2 التحليل الإحصائي</span>
+    <span>7-3 الاحتمال المشروط</span>
+    <span>7-4 التوزيعات الاحتمالية</span>
+    <span>7-5 التوزيع الطبيعي</span>
+    <span>7-6 التوزيعات ذات الحدين</span>
+  </div>
+</div>
+
+<div class="container">
+
+  <!-- ===== LESSON 7-1 ===== -->
+  <div class="lesson">
+    <div class="lesson-header">
+      <div class="lesson-num">7-1</div>
+      <div>
+        <h2>الدراسات التجريبية والمسحية والقائمة على الملاحظة</h2>
+        <div class="en">Experiments, Surveys & Observational Studies</div>
+      </div>
+    </div>
+    <div class="lesson-body">
+
+      <div class="section-label">المفاهيم الأساسية</div>
+      <div class="concept-grid">
+        <div class="concept-card">
+          <div class="cc-title">المجتمع</div>
+          <p>جميع الأفراد أو العناصر التي تشملهم الدراسة.</p>
+        </div>
+        <div class="concept-card">
+          <div class="cc-title">العينة</div>
+          <p>مجموعة جزئية مختارة من المجتمع لتمثيله في الدراسة.</p>
+        </div>
+        <div class="concept-card">
+          <div class="cc-title">عينة متحيزة</div>
+          <p>عينة لا تمثّل المجتمع بصورة عادلة، وتُعطي نتائج مضللة.</p>
+        </div>
+        <div class="concept-card">
+          <div class="cc-title">عينة غير متحيزة</div>
+          <p>كل فرد في المجتمع لديه الفرصة ذاتها ليكون ضمن العينة.</p>
+        </div>
+      </div>
+
+      <div class="divider"></div>
+      <div class="section-label">أنواع الدراسات</div>
+
+      <table class="styled-table">
+        <thead>
+          <tr><th>النوع</th><th>الوصف</th><th>مثال</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>الدراسة المسحية</strong></td>
+            <td>جمع بيانات بأسئلة دون التدخل في المتغيرات</td>
+            <td>استبيان رأي الطلاب</td>
+          </tr>
+          <tr>
+            <td><strong>الدراسة التجريبية</strong></td>
+            <td>تُطبَّق معالجة على مجموعة والمقارنة بضابطة</td>
+            <td>اختبار دواء جديد</td>
+          </tr>
+          <tr>
+            <td><strong>دراسة الملاحظة</strong></td>
+            <td>مراقبة دون التدخل</td>
+            <td>رصد سلوك الطلاب في الفسحة</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="example">
+        <div class="example-title"><span class="badge">مثال</span> تحديد نوع العينة</div>
+        <div class="example-q">سُئل كل عاشر شخص يخرج من مقهى عن تقييمه للخدمة. هل العينة متحيزة أم غير متحيزة؟</div>
+        <ul class="example-steps">
+          <li>الاختيار تم بصورة منتظمة (كل عاشر شخص) دون تفضيل.</li>
+          <li>كل زبون لديه فرصة أن يُختار.</li>
+        </ul>
+        <div class="answer">العينة غير متحيزة</div>
+      </div>
+
+      <div class="example">
+        <div class="example-title"><span class="badge">مثال</span> عينة متحيزة</div>
+        <div class="example-q">استُطلعت آراء روّاد نادٍ رياضي عن مدى ممارستهم للرياضة يومياً. هل العينة متحيزة؟</div>
+        <ul class="example-steps">
+          <li>الأشخاص الموجودون في النادي هم بطبيعتهم يمارسون الرياضة.</li>
+          <li>لا يمثلون عموم سكان المدينة.</li>
+        </ul>
+        <div class="answer">العينة متحيزة – لا تمثّل المجتمع الكلي</div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ===== LESSON 7-2 ===== -->
+  <div class="lesson">
+    <div class="lesson-header">
+      <div class="lesson-num">7-2</div>
+      <div>
+        <h2>التحليل الإحصائي</h2>
+        <div class="en">Statistical Analysis</div>
+      </div>
+    </div>
+    <div class="lesson-body">
+
+      <div class="section-label">مقاييس النزعة المركزية</div>
+      <table class="styled-table">
+        <thead>
+          <tr><th>المقياس</th><th>التعريف</th><th>متى يُستخدم؟</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>المتوسط الحسابي</strong></td>
+            <td>مجموع القيم ÷ عددها</td>
+            <td>البيانات غير متطرفة</td>
+          </tr>
+          <tr>
+            <td><strong>الوسيط</strong></td>
+            <td>القيمة الوسطى بعد الترتيب</td>
+            <td>توجد قيم متطرفة</td>
+          </tr>
+          <tr>
+            <td><strong>المنوال</strong></td>
+            <td>القيمة الأكثر تكراراً</td>
+            <td>البيانات تكرارية</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="divider"></div>
+      <div class="section-label">مقاييس التشتت</div>
+      <div class="concept-grid">
+        <div class="concept-card">
+          <div class="cc-title">التباين (σ²)</div>
+          <p>متوسط مربعات الانحرافات عن المتوسط. يقيس مدى تشتت البيانات.</p>
+        </div>
+        <div class="concept-card">
+          <div class="cc-title">الانحراف المعياري (σ)</div>
+          <p>الجذر التربيعي للتباين. كلما صغر كلما كانت البيانات متقاربة.</p>
+        </div>
+        <div class="concept-card">
+          <div class="cc-title">هامش خطأ المعاينة</div>
+          <p>يقدّر بـ ±1/√n ويعطي نطاق الثقة للنتائج.</p>
+        </div>
+        <div class="concept-card">
+          <div class="cc-title">المُعلَّمة vs الإحصائي</div>
+          <p>المعلَّمة: تصف المجتمع كله. الإحصائي: يصف العينة فقط.</p>
+        </div>
+      </div>
+
+      <div class="formula-box">
+        <div class="f-label">الانحراف المعياري</div>
+        <div class="f-eq">σ = √[ Σ(xᵢ − x̄)² / n ]</div>
+      </div>
+
+      <div class="example">
+        <div class="example-title"><span class="badge">مثال</span> حساب المتوسط والوسيط</div>
+        <div class="example-q">البيانات: 4, 7, 7, 9, 13. أوجد المتوسط والوسيط والمنوال.</div>
+        <ul class="example-steps">
+          <li>المجموع = 4+7+7+9+13 = 40، المتوسط = 40÷5 = <strong>8</strong></li>
+          <li>البيانات مرتبة بالفعل، القيمة الوسطى هي الثالثة = <strong>7</strong></li>
+          <li>الرقم 7 يتكرر مرتين → المنوال = <strong>7</strong></li>
+        </ul>
+        <div class="answer">متوسط = 8 ، وسيط = 7 ، منوال = 7</div>
+      </div>
+
+      <div class="example">
+        <div class="example-title"><span class="badge">مثال</span> هامش خطأ المعاينة</div>
+        <div class="example-q">شملت دراسة 400 شخص وأظهرت أن 62% يفضّلون منتجاً معيناً. ما هامش الخطأ؟</div>
+        <ul class="example-steps">
+          <li>هامش الخطأ = ±1/√n = ±1/√400 = ±1/20 = ±0.05</li>
+          <li>إذن النسبة الحقيقية بين 57% و 67%</li>
+        </ul>
+        <div class="answer">هامش الخطأ = ±5%</div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ===== LESSON 7-3 ===== -->
+  <div class="lesson">
+    <div class="lesson-header">
+      <div class="lesson-num">7-3</div>
+      <div>
+        <h2>الاحتمال المشروط</h2>
+        <div class="en">Conditional Probability</div>
+      </div>
+    </div>
+    <div class="lesson-body">
+
+      <div class="def-box">
+        <div class="def-title">تعريف الاحتمال المشروط</div>
+        احتمال وقوع الحادثة B بشرط أن الحادثة A قد وقعت. يُرمز له بـ P(B|A).
+      </div>
+
+      <div class="formula-box">
+        <div class="f-label">قانون الاحتمال المشروط</div>
+        <div class="f-eq">P(B|A) = P(A ∩ B) / P(A) ، بشرط P(A) ≠ 0</div>
+      </div>
+
+      <div class="rule-box">
+        <div class="r-title">📌 خاصية الاستقلالية</div>
+        <p>إذا كانت A وB مستقلتين فإن: <strong>P(B|A) = P(B)</strong><br>
+        وبالتالي: P(A ∩ B) = P(A) × P(B)</p>
+      </div>
+
+      <div class="divider"></div>
+      <div class="section-label">الجدول التوافقي</div>
+      <p style="font-size:0.88rem;color:var(--text-light);margin-bottom:10px;">أداة قوية لإيجاد الاحتمالات المشروطة من بيانات مجمّعة.</p>
+
+      <div class="example">
+        <div class="example-title"><span class="badge">مثال 1</span> المكعب</div>
+        <div class="example-q">رُمي مكعب مرة واحدة. ما احتمال ظهور 3 علمًا بأن العدد الظاهر فردي؟</div>
+        <ul class="example-steps">
+          <li>A = أعداد فردية = {1,3,5} → P(A) = 3/6 = 1/2</li>
+          <li>A ∩ B = {3} → P(A ∩ B) = 1/6</li>
+          <li>P(B|A) = P(A∩B) / P(A) = (1/6) ÷ (1/2) = 1/3</li>
+        </ul>
+        <div class="answer">P(B|A) = 1/3</div>
+      </div>
+
+      <div class="example">
+        <div class="example-title"><span class="badge">مثال 2</span> جدول توافقي</div>
+        <div class="example-q">في استطلاع لـ100 طالب: 40 ذكر (15 منهم يرتدي نظارة)، 60 أنثى (25 منهن يرتدين نظارة). ما احتمال أن يرتدي الطالب نظارة علمًا بأنه ذكر؟</div>
+        <ul class="example-steps">
+          <li>P(ذكر) = 40/100 = 2/5</li>
+          <li>P(ذكر ∩ نظارة) = 15/100 = 3/20</li>
+          <li>P(نظارة | ذكر) = (15/100) ÷ (40/100) = 15/40 = 3/8</li>
+        </ul>
+        <div class="answer">P(نظارة | ذكر) = 3/8 = 0.375</div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ===== LESSON 7-4 ===== -->
+  <div class="lesson">
+    <div class="lesson-header">
+      <div class="lesson-num">7-4</div>
+      <div>
+        <h2>الاحتمال والتوزيعات الاحتمالية</h2>
+        <div class="en">Probability and Probability Distributions</div>
+      </div>
+    </div>
+    <div class="lesson-body">
+
+      <div class="concept-grid">
+        <div class="concept-card">
+          <div class="cc-title">المتغير العشوائي</div>
+          <p>متغير تتحدد قيمته بناء على نتيجة تجربة عشوائية.</p>
+        </div>
+        <div class="concept-card">
+          <div class="cc-title">التوزيع الاحتمالي</div>
+          <p>جدول أو دالة تُبيّن احتمال كل قيمة ممكنة للمتغير العشوائي.</p>
+        </div>
+        <div class="concept-card">
+          <div class="cc-title">الاحتمال النظري</div>
+          <p>P(حادثة) = عدد النتائج المواتية ÷ عدد النتائج الممكنة</p>
+        </div>
+        <div class="concept-card">
+          <div class="cc-title">الاحتمال التجريبي</div>
+          <p>يُحسب من التجربة الفعلية: عدد مرات الحدوث ÷ عدد التجارب</p>
+        </div>
+      </div>
+
+      <div class="formula-box">
+        <div class="f-label">احتمال النجاح والفشل</div>
+        <div class="f-eq">P(S) = s/(s+f) &nbsp;&nbsp;،&nbsp;&nbsp; P(F) = f/(s+f)</div>
+      </div>
+
+      <div class="divider"></div>
+      <div class="section-label">القيمة المتوقعة</div>
+      <div class="def-box">
+        <div class="def-title">القيمة المتوقعة E(X)</div>
+        هي المتوسط المرجح لقيم المتغير العشوائي:<br>
+        <strong>E(X) = Σ [xᵢ · P(xᵢ)]</strong>
+      </div>
+
+      <div class="example">
+        <div class="example-title"><span class="badge">مثال 1</span> احتمال باستعمال التوافيق</div>
+        <div class="example-q">كيس فيه 4 كرات حمراء و6 زرقاء. سُحبت 3 كرات عشوائياً. ما احتمال أن تكون كلها حمراء؟</div>
+        <ul class="example-steps">
+          <li>s = عدد طرق اختيار 3 حمراء من 4 = ₄C₃ = 4</li>
+          <li>s+f = إجمالي طرق اختيار 3 من 10 = ₁₀C₃ = 120</li>
+          <li>P = 4/120 = 1/30</li>
+        </ul>
+        <div class="answer">P = 1/30 ≈ 0.033</div>
+      </div>
+
+      <div class="example">
+        <div class="example-title"><span class="badge">مثال 2</span> القيمة المتوقعة</div>
+        <div class="example-q">لعبة: تربح 10 ريالات باحتمال 0.3، وتخسر 4 ريالات باحتمال 0.7. ما القيمة المتوقعة؟</div>
+        <ul class="example-steps">
+          <li>E(X) = (10 × 0.3) + (−4 × 0.7)</li>
+          <li>E(X) = 3 − 2.8 = 0.2</li>
+        </ul>
+        <div class="answer">E(X) = 0.2 ريال (اللعبة مربحة بشكل بسيط)</div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ===== LESSON 7-5 ===== -->
+  <div class="lesson">
+    <div class="lesson-header">
+      <div class="lesson-num">7-5</div>
+      <div>
+        <h2>التوزيع الطبيعي</h2>
+        <div class="en">The Normal Distribution</div>
+      </div>
+    </div>
+    <div class="lesson-body">
+
+      <div class="def-box">
+        <div class="def-title">التوزيع الطبيعي</div>
+        توزيع احتمالي متصل يأخذ شكل المنحنى الجرسي المتماثل حول المتوسط.
+        يتساوى فيه المتوسط والوسيط والمنوال.
+      </div>
+
+      <div class="section-label">خصائص التوزيع الطبيعي</div>
+      <div class="rule-box">
+        <ul>
+          <li>المنحنى جرسي الشكل ومتماثل حول المتوسط (μ)</li>
+          <li>المتوسط = الوسيط = المنوال</li>
+          <li>المنحنى متصل ويقترب من محور السينات ولا يلمسه</li>
+          <li>المساحة تحت المنحنى كاملها = 1</li>
+        </ul>
+      </div>
+
+      <div class="divider"></div>
+      <div class="section-label">قاعدة 68-95-99.7</div>
+      <table class="styled-table">
+        <thead>
+          <tr><th>النطاق</th><th>النسبة المئوية للبيانات</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>μ ± σ (انحراف معياري واحد)</td><td>68%</td></tr>
+          <tr><td>μ ± 2σ (انحرافان معياريان)</td><td>95%</td></tr>
+          <tr><td>μ ± 3σ (ثلاثة انحرافات)</td><td>99.7%</td></tr>
+        </tbody>
+      </table>
+
+      <div class="section-label">أنواع التوزيعات</div>
+      <div class="concept-grid">
+        <div class="concept-card">
+          <div class="cc-title">التوزيع الطبيعي</div>
+          <p>متماثل، معظم البيانات في المنتصف. المنحنى جرسي متوازن.</p>
+        </div>
+        <div class="concept-card">
+          <div class="cc-title">التوزيع الملتوي موجباً</div>
+          <p>ملتوٍ إلى اليمين، ذيل طويل في اليمين، معظم البيانات في اليسار.</p>
+        </div>
+        <div class="concept-card">
+          <div class="cc-title">التوزيع الملتوي سالباً</div>
+          <p>ملتوٍ إلى اليسار، ذيل طويل في اليسار، معظم البيانات في اليمين.</p>
+        </div>
+        <div class="concept-card">
+          <div class="cc-title">الدرجة المعيارية Z</div>
+          <p>Z = (x − μ) / σ تحوّل أي قيمة إلى درجة معيارية.</p>
+        </div>
+      </div>
+
+      <div class="formula-box">
+        <div class="f-label">الدرجة المعيارية</div>
+        <div class="f-eq">Z = (x − μ) / σ</div>
+      </div>
+
+      <div class="example">
+        <div class="example-title"><span class="badge">مثال 1</span> تصنيف التوزيع</div>
+        <div class="example-q">بيانات الاختبار: 55، 60، 62، 63، 63، 64، 65، 90. ما نوع التوزيع؟</div>
+        <ul class="example-steps">
+          <li>معظم القيم متقاربة (55–65) لكن توجد قيمة بعيدة (90) في الطرف الأيمن.</li>
+          <li>هذا يعني وجود ذيل طويل في اليمين.</li>
+        </ul>
+        <div class="answer">التوزيع ملتوٍ موجباً (إلى اليمين)</div>
+      </div>
+
+      <div class="example">
+        <div class="example-title"><span class="badge">مثال 2</span> قاعدة 68-95-99.7</div>
+        <div class="example-q">درجات اختبار تتبع التوزيع الطبيعي: μ = 70، σ = 8. ما نسبة الطلاب الذين درجاتهم بين 54 و 86؟</div>
+        <ul class="example-steps">
+          <li>54 = 70 − 2×8 → تساوي μ − 2σ</li>
+          <li>86 = 70 + 2×8 → تساوي μ + 2σ</li>
+          <li>النطاق μ ± 2σ يحوي 95% من البيانات</li>
+        </ul>
+        <div class="answer">95% من الطلاب درجاتهم بين 54 و 86</div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ===== LESSON 7-6 ===== -->
+  <div class="lesson">
+    <div class="lesson-header">
+      <div class="lesson-num">7-6</div>
+      <div>
+        <h2>التوزيعات ذات الحدين</h2>
+        <div class="en">Binomial Distributions</div>
+      </div>
+    </div>
+    <div class="lesson-body">
+
+      <div class="def-box">
+        <div class="def-title">تجربة ذات الحدين</div>
+        تجربة احتمالية تتحقق فيها الشروط التالية:
+        عدد محدد من المحاولات المستقلة (n)، كل محاولة لها نتيجتان فقط (نجاح S أو فشل F)،
+        واحتمال النجاح (p) ثابت في كل محاولة.
+      </div>
+
+      <div class="rule-box">
+        <div class="r-title">📌 شروط تجربة ذات الحدين</div>
+        <ul>
+          <li>تُعاد التجربة <strong>n</strong> مرة (المحاولات مستقلة)</li>
+          <li>كل محاولة: نجاح S أو فشل F فقط</li>
+          <li>P(S) = p ثابت، P(F) = q = 1 − p</li>
+          <li>X = عدد النجاحات في n محاولة</li>
+        </ul>
+      </div>
+
+      <div class="formula-box">
+        <div class="f-label">احتمال التوزيع ذي الحدين</div>
+        <div class="f-eq">P(X = r) = ₙCᵣ · pʳ · qⁿ⁻ʳ</div>
+      </div>
+
+      <div class="divider"></div>
+      <div class="section-label">خصائص التوزيع ذي الحدين</div>
+      <table class="styled-table">
+        <thead>
+          <tr><th>الخاصية</th><th>القانون</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>المتوسط (القيمة المتوقعة)</td><td>μ = np</td></tr>
+          <tr><td>التباين</td><td>σ² = npq</td></tr>
+          <tr><td>الانحراف المعياري</td><td>σ = √(npq)</td></tr>
+        </tbody>
+      </table>
+
+      <div class="note">
+        <strong>تنبيه:</strong> في التوزيع ذي الحدين، q = 1 − p دائماً، وp + q = 1.
+      </div>
+
+      <div class="example">
+        <div class="example-title"><span class="badge">مثال 1</span> تمييز تجربة ذات حدين</div>
+        <div class="example-q">إحصائية تقول أن 68% من طلاب المدارس يملكون حاسبة بيانية. إذا اختير 6 طلاب عشوائياً، هل هذه تجربة ذات حدين؟</div>
+        <ul class="example-steps">
+          <li>n = 6 (محاولات محددة ومستقلة) ✓</li>
+          <li>نتيجتان: يملك الحاسبة (S) أو لا يملكها (F) ✓</li>
+          <li>p = 0.68 ثابت لكل طالب ✓</li>
+        </ul>
+        <div class="answer">نعم، تجربة ذات حدين: n=6، p=0.68، q=0.32</div>
+      </div>
+
+      <div class="example">
+        <div class="example-title"><span class="badge">مثال 2</span> حساب الاحتمال</div>
+        <div class="example-q">رُمي عملة معدنية 5 مرات. ما احتمال ظهور الصورة 3 مرات بالضبط؟</div>
+        <ul class="example-steps">
+          <li>n = 5، r = 3، p = 1/2، q = 1/2</li>
+          <li>₅C₃ = 10</li>
+          <li>P(X=3) = 10 × (1/2)³ × (1/2)² = 10 × (1/8) × (1/4)</li>
+          <li>P(X=3) = 10/32 = 5/16</li>
+        </ul>
+        <div class="answer">P(X=3) = 5/16 ≈ 0.3125</div>
+      </div>
+
+      <div class="example">
+        <div class="example-title"><span class="badge">مثال 3</span> المتوسط والانحراف المعياري</div>
+        <div class="example-q">احتمال نجاح لاعب في رمية حرة 0.7. رمى 20 رمية. أوجد المتوسط والانحراف المعياري.</div>
+        <ul class="example-steps">
+          <li>n=20، p=0.7، q=0.3</li>
+          <li>μ = np = 20 × 0.7 = 14</li>
+          <li>σ = √(npq) = √(20 × 0.7 × 0.3) = √4.2 ≈ 2.05</li>
+        </ul>
+        <div class="answer">المتوسط = 14 رمية ناجحة، الانحراف المعياري ≈ 2.05</div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- SUMMARY TABLE -->
+  <div class="lesson">
+    <div class="lesson-header" style="background: linear-gradient(90deg, #1a3a2a, #1a5c3a);">
+      <div class="lesson-num">📋</div>
+      <div>
+        <h2>ملخص القوانين الأساسية</h2>
+        <div class="en">Key Formulas Summary</div>
+      </div>
+    </div>
+    <div class="lesson-body">
+      <table class="styled-table">
+        <thead>
+          <tr><th>الموضوع</th><th>القانون</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>هامش خطأ المعاينة</td><td>±1/√n</td></tr>
+          <tr><td>الاحتمال المشروط</td><td>P(B|A) = P(A∩B) / P(A)</td></tr>
+          <tr><td>الاستقلالية</td><td>P(A∩B) = P(A) × P(B)</td></tr>
+          <tr><td>القيمة المتوقعة</td><td>E(X) = Σ [xᵢ · P(xᵢ)]</td></tr>
+          <tr><td>الدرجة المعيارية</td><td>Z = (x − μ) / σ</td></tr>
+          <tr><td>التوزيع ذو الحدين</td><td>P(X=r) = ₙCᵣ · pʳ · qⁿ⁻ʳ</td></tr>
+          <tr><td>متوسط التوزيع ذي الحدين</td><td>μ = np</td></tr>
+          <tr><td>انحراف التوزيع ذي الحدين</td><td>σ = √(npq)</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+</div>
+
+<footer>
+  الوحدة السابعة – الاحتمال والإحصاء | رياضيات ثالث ثانوي 1445 هـ
+</footer>
+
+</body>
+</html>
